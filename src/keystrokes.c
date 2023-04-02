@@ -5,7 +5,6 @@
 #include <linux/input.h>
 #include <unistd.h>
 #include <pthread.h>
-#include "parseInput.h"
 #include "functions.h"
 
 int fd = -1;
