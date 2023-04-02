@@ -8,8 +8,6 @@
 #include "parseInput.h"
 #include "functions.h"
 
-#define MAX_SIZE 1024
-
 int fd = -1;
 
 void initializeFd(char* fileName){

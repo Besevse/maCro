@@ -1,3 +1,6 @@
+#ifndef PARSEINPUT_H
+#define PARSEINPUT_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -53,3 +56,5 @@ void parseInput(char* fileName, char timers[MAX_SIZE][MAX_SIZE], char macros[MAX
         macroChar[i][counter+1] = '\0';
     }
 }
+
+#endif PARSEINPUT_H

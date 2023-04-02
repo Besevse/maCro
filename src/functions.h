@@ -1,3 +1,6 @@
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,8 +12,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <pthread.h>
-
-#define MAX_SIZE 1024
+#include "parseInput.h"
 
 extern void pressAndRelease(int key);
 
@@ -70,3 +72,6 @@ void *timer(char *arg) {
         execute(&arg[counter+1]);
     }
 }
+
+
+#endif
