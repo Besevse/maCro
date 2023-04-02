@@ -32,11 +32,10 @@ void pressAndRelease(int key){
 
 int main(int argc, char *argv[]) {
     char* deviceName = "/dev/input/event6";
-    int fdInput;
     struct input_event out;
-    char timers[MAX_SIZE][MAX_SIZE];
-    char macros[MAX_SIZE][MAX_SIZE];
-    char macroChar[MAX_SIZE][MAX_SIZE];
+    char timers[MAX][MAX_STRING_LENGTH];
+    char macros[MAX][MAX_STRING_LENGTH];
+    char macroChar[MAX][MAX_STRING_LENGTH];
     int timerCounter = 0;
     int macroCounter = 0;
 
@@ -58,7 +57,6 @@ int main(int argc, char *argv[]) {
     fd_set rfds;
     FD_ZERO(&rfds);
     FD_SET(fd, &rfds);
-
     // main loop
     while (1) {
         int ret = select(fd + 1, &rfds, NULL, NULL, NULL);
@@ -68,7 +66,6 @@ int main(int argc, char *argv[]) {
         }
         else if (ret > 0 && FD_ISSET(fd, &rfds)) {
             fsync(fd);
-
             if (read(fd, &out, sizeof(struct input_event)) == -1) {
                 perror("Error reading file");
                 exit(1);
@@ -86,7 +83,6 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-
     close(fd);
     return 0;
 }

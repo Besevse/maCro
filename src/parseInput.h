@@ -8,10 +8,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "constants.h"
 
-#define MAX_SIZE 1024
-
-void parseInput(char* fileName, char timers[MAX_SIZE][MAX_SIZE], char macros[MAX_SIZE][MAX_SIZE], char macroChar[MAX_SIZE][MAX_SIZE], int* timerCounter, int* macroCounter){
+void parseInput(char* fileName, char timers[MAX][MAX_STRING_LENGTH], char macros[MAX][MAX_STRING_LENGTH], char macroChar[MAX][MAX_STRING_LENGTH], int* timerCounter, int* macroCounter){
     int fdInput;
 
     fdInput = open(fileName, O_RDONLY);
@@ -21,25 +20,37 @@ void parseInput(char* fileName, char timers[MAX_SIZE][MAX_SIZE], char macros[MAX
     }
 
     // read fdInput line by line
-    char line[MAX_SIZE];
+    char line[MAX_STRING_LENGTH];
     int bytes_read;
     int sizeRead = 0;
 
     // TODO this is very rough and pretty unsafe but it works for now
-    while ((bytes_read = read(fdInput, line, MAX_SIZE)) > 0) {
+    while ((bytes_read = read(fdInput, line, MAX_STRING_LENGTH)) > 0) {
         for (int i = 0; i < bytes_read; i++) {
             if (line[i] == '\n' && sizeRead < i) {
                 if(line[sizeRead] == 't' ){
-                    strncpy(&timers[*timerCounter], &line[sizeRead + 2],  i-sizeRead-1);
+                    if(i-sizeRead-1 > MAX_STRING_LENGTH){
+                        printf("Timer too long, max is %d\n", MAX_STRING_LENGTH);
+                        exit(1);
+                    }
+                    strncpy((char*)&timers[*timerCounter], (char*)&line[sizeRead + 2],  i-sizeRead-1);
                     timers[*timerCounter][i-sizeRead-1] = '\0';
                     sizeRead = i + 1;
                     *timerCounter = *timerCounter + 1;
                 }
                 else if(line[sizeRead] == 'm'){
-                    strncpy(&macros[*macroCounter], &line[sizeRead + 2],  i-sizeRead-1);
+                    if(i-sizeRead-1 > MAX_STRING_LENGTH){
+                        printf("Macro too long, max is %d\n", MAX_STRING_LENGTH);
+                        exit(1);
+                    }
+                    strncpy((char*)&macros[*macroCounter], (char*)&line[sizeRead + 2],  i-sizeRead-1);
                     macros[*macroCounter][i-sizeRead-1] = '\0';
                     sizeRead = i + 1;
                     *macroCounter = *macroCounter + 1;
+                }
+                if(*macroCounter == MAX || *timerCounter == MAX){
+                    printf("Too many macros or timers, max is %d\n", MAX);
+                    exit(1);
                 }
             }
         }

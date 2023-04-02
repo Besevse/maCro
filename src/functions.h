@@ -23,7 +23,7 @@ void executeBash(char *arg){
 void executeKeystrokes(char* arg){
     int counter = 0;
     int counterSpace = 0;   
-    char temp[MAX_SIZE];
+    char temp[MAX_STRING_LENGTH];
     while(1){
         if(arg[counter] == ' '){
             temp[counterSpace+1] = '\0';
@@ -46,7 +46,7 @@ void executeKeystrokes(char* arg){
 void execute(char *arg){
     if(arg[0] == 'b'){
         pthread_t thread;
-        pthread_create(&thread, NULL, executeBash, &arg[2]);
+        pthread_create(&thread, NULL, executeBash, (char*)&arg[2]);
     }
     if(arg[0] == 'k'){
         executeKeystrokes(&arg[2]);
@@ -56,7 +56,7 @@ void execute(char *arg){
 
 
 void *timer(char *arg) {
-    char sleepTimeChar[MAX_SIZE];
+    char sleepTimeChar[MAX_STRING_LENGTH];
     int sleepTime;
 
     int counter = 0;

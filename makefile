@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -pedantic -std=c99 -lX11 -lXtst
 
-build: src/keystrokes.c src/keystrokesx11.c src/parseInput.h
+build: src/keystrokes.c src/keystrokesx11.c src/parseInput.h src/functions.h src/constants.h
 	mkdir -p build
 	$(CC) $(CFLAGS) -o build/keystrokesx11 src/keystrokesx11.c
 	$(CC) $(CFLAGS) -o build/keystrokes src/keystrokes.c

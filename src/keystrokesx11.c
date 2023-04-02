@@ -42,10 +42,9 @@ void pressAndRelease(int button)
 
 
 int main(int argc, char *argv[]){
-    struct input_event out;
-    char timers[MAX_SIZE][MAX_SIZE];
-    char macros[MAX_SIZE][MAX_SIZE];
-    char macroChar[MAX_SIZE][MAX_SIZE];
+    char timers[MAX][MAX_STRING_LENGTH];
+    char macros[MAX][MAX_STRING_LENGTH];
+    char macroChar[MAX][MAX_STRING_LENGTH];
     int timerCounter = 0;
     int macroCounter = 0;
 
@@ -60,14 +59,12 @@ int main(int argc, char *argv[]){
     for(int i = 0; i < timerCounter; i++){
         printf("Starting timer %s\n", timers[i]);
         pthread_t thread;
-        pthread_create(&thread, NULL, timer, timers[i]);
+        pthread_create(&thread, NULL, timer, &timers[i]);
         threads[i] = thread;
     }
 
     Window root = DefaultRootWindow(display);
     Window focused;
-    KeySym ks;
-    XComposeStatus comp;
     int revert;
 
     XGetInputFocus (display, &focused, &revert);
@@ -91,7 +88,7 @@ int main(int argc, char *argv[]){
                 printf("Keypress detected: %d\n", ev.xkey.keycode);
                 for(int i = 0; i < macroCounter; i++){
                     printf("Comparing %d to %d\n", ev.xkey.keycode, atoi(macroChar[i]));
-                    if(ev.xkey.keycode == atoi(macroChar[i])){
+                    if(ev.xkey.keycode == (unsigned int)atoi(macroChar[i])){
                         execute(&macros[i][strlen(macroChar[i])+1]);
                     }
                 }
