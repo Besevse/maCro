@@ -98,4 +98,5 @@ int main(int argc, char *argv[]){
         }
     }
     XCloseDisplay(display);
+    return 0;
 }
