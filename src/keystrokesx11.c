@@ -44,7 +44,7 @@ void pressAndRelease(int button)
 }
 
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]){
     struct input_event out;
     char timers[MAX_SIZE][MAX_SIZE];
     char macros[MAX_SIZE][MAX_SIZE];
@@ -79,12 +79,10 @@ int main(int argc, char *argv[]) {
     XGetInputFocus (display, &focused, &revert);
     XSelectInput(display, focused, KeyPressMask|KeyReleaseMask|FocusChangeMask);
 
-    while (1)
-    {
+    while (1){
         XEvent ev;
         XNextEvent(display, &ev);
-        switch (ev.type)
-        {
+        switch (ev.type){
             case FocusOut:
                 printf("switching focus\n");
                 if (focused != root)
@@ -96,7 +94,15 @@ int main(int argc, char *argv[]) {
                 break;
 
             case KeyPress:
-                printf ("key pressed %d\n", ev.xkey.keycode);
+                printf("Keypress detected: %d\n", ev.xkey.keycode);
+                for(int i = 0; i < macroCounter; i++){
+                    printf("Comparing %d to %d\n", ev.xkey.keycode, atoi(macroChar[i]));
+                    if(ev.xkey.keycode == atoi(macroChar[i])){
+                        execute(&macros[i][strlen(macroChar[i])+1]);
+                    }
+                }
+                fflush(stdout);
+                break;
         }
     }
 }
