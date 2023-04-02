@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include "functions.h"
+#include "constants.h"
 
 int fd = -1;
 
@@ -22,6 +23,7 @@ void pressAndRelease(int key){
     struct input_event in;
     in.type = EV_KEY;
     in.value = 1;
+
     in.code = key;
     write(fd, &in, sizeof(in));
     in.value = 0;

@@ -13,6 +13,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include "parseInput.h"
+#include "constants.h"
 
 extern void pressAndRelease(int key);
 

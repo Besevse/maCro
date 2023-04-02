@@ -11,6 +11,7 @@
 #include <X11/keysym.h>
 #include <X11/extensions/XTest.h>
 #include "functions.h"
+#include "constants.h"
 
 Display *display;
 
