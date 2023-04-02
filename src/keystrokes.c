@@ -31,6 +31,7 @@ void pressAndRelease(int key){
 
 
 int main(int argc, char *argv[]) {
+    char* deviceName = "/dev/input/event6";
     int fdInput;
     struct input_event out;
     char timers[MAX_SIZE][MAX_SIZE];
@@ -39,14 +40,11 @@ int main(int argc, char *argv[]) {
     int timerCounter = 0;
     int macroCounter = 0;
 
+    initializeFd(deviceName);
     parseInput(argv[1], timers, macros, macroChar, &timerCounter, &macroCounter);
-    initializeFd("/dev/input/event6");
+
     sleep(0.1);
-    fdInput = open(argv[1], O_RDONLY);
-    if (fdInput == -1) {
-        perror("Error opening input file");
-        exit(1);
-    }
+
     pthread_t threads[timerCounter];
     // start all timers
     for(int i = 0; i < timerCounter; i++){
@@ -90,6 +88,5 @@ int main(int argc, char *argv[]) {
     }
 
     close(fd);
-
     return 0;
 }

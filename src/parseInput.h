@@ -57,4 +57,4 @@ void parseInput(char* fileName, char timers[MAX_SIZE][MAX_SIZE], char macros[MAX
     }
 }
 
-#endif PARSEINPUT_H
+#endif

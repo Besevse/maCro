@@ -49,11 +49,8 @@ int main(int argc, char *argv[]){
     int timerCounter = 0;
     int macroCounter = 0;
 
-
-    parseInput(argv[1], timers, macros, macroChar, &timerCounter, &macroCounter);
     initializeDisplay();
-
-    printf("%s", timers[0]);
+    parseInput(argv[1], timers, macros, macroChar, &timerCounter, &macroCounter);
 
     sleep(0.1);
 
@@ -102,4 +99,5 @@ int main(int argc, char *argv[]){
                 break;
         }
     }
+    XCloseDisplay(display);
 }
