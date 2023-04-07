@@ -92,11 +92,14 @@ int main(int argc, char *argv[]){
                     if(ev.xkey.keycode == (unsigned int)atoi(macroChar[i])){
                         execute(&macros[i][strlen(macroChar[i])+1]);
                     }
+                    else if(ev.xkey.keycode == 34)
+                        goto finish;
                 }
                 fflush(stdout);
                 break;
         }
     }
+    finish:
     XCloseDisplay(display);
     return 0;
 }
