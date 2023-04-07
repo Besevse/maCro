@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <pthread.h>
+#include <time.h>
 #include "parseInput.h"
 #include "constants.h"
 
@@ -56,9 +57,23 @@ void execute(char *arg){
 }
 
 
+float randomFloat(float a, float b) {
+    float random = ((float) rand()) / (float) RAND_MAX;
+    float diff = b - a;
+    float r = random * diff;
+    return a + r;
+}
+
+void sleep_for_float(float seconds) {
+    struct timespec req;
+    req.tv_sec = (time_t)seconds;  // Get the integer part of the seconds
+    req.tv_nsec = (long)((seconds - req.tv_sec) * 1e9);  // Get the fractional part in nanoseconds
+    nanosleep(&req, NULL);  // Sleep for the specified time
+}
+
 void *timer(char *arg) {
     char sleepTimeChar[MAX_STRING_LENGTH];
-    int sleepTime;
+    float sleepTime;
 
     int counter = 0;
     while(arg[counter] != ' '){
@@ -66,10 +81,13 @@ void *timer(char *arg) {
         counter++;
     }
     sleepTimeChar[counter+1] = '\0';
-    sleepTime = atoi(sleepTimeChar);
+    sleepTime = atof(sleepTimeChar);
 
+    printf("sleeptime: %f\n", sleepTime);
     while(1){
-        sleep(sleepTime);
+        float sleepyTime = sleepTime * randomFloat(1.0, 2.0);
+        printf("Sleeping for %f seconds", sleepyTime);
+        sleep_for_float(sleepyTime);
         execute(&arg[counter+1]);
     }
 }
