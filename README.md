@@ -9,19 +9,25 @@ Inside input.txt there's an example of two macros and 1 timer but in general you
 
 1 = "m" for macro or "t" for timer
 
-2 = keypresse which to listen to for macro or x amount of seconds to wait for timer
+2 = keypress which to listen to for macro or x amount of seconds to wait for timer
 
 3 = "b" for bash command or "k" for keystrokes
 
-4 = bash command or keystrokes seperated by " " you want to execute
+4 = bash command or keystrokes seperated by ' ' you want to execute
 
 
 How to use:
 ```
-$ make build
+$ make buildall
+$ make link
 $ make run
 ```
-or make runx11 for the x11 version
+for the x11 version do
 
+```
+$ make buildall
+$ make linkx11
+$ make run
+```
 
 THIS IS A WIP!
