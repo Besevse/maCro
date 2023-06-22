@@ -27,6 +27,11 @@ void pressAndRelease(int key) {
     XFlush(display);
 }
 
+int xerrorhandler(Display *display, XErrorEvent *error) {
+    printf("Caught an X error: %d\n", error->error_code);
+    fflush(stdout);
+}
+
 int main(int argc, char *argv[]) {
     char timers[MAX][MAX_STRING_LENGTH];
     char macros[MAX][MAX_STRING_LENGTH];
@@ -35,6 +40,8 @@ int main(int argc, char *argv[]) {
     int macroCounter = 0;
 
     initializeDisplay();
+    XSetErrorHandler(xerrorhandler);
+
     parseInput(argv[1], timers, macros, macroChar, &timerCounter,
                &macroCounter);
 
@@ -63,11 +70,14 @@ int main(int argc, char *argv[]) {
         switch (ev.type) {
         case FocusOut:
             printf("switching focus\n");
-            if (focused != root)
+            if (focused != root) {
                 XSelectInput(display, focused, 0);
-            XGetInputFocus(display, &focused, &revert);
-            if (focused == PointerRoot)
+            }
+
+            int a = XGetInputFocus(display, &focused, &revert);
+            if (focused == PointerRoot) {
                 focused = root;
+            }
             XSelectInput(display, focused,
                          KeyPressMask | KeyReleaseMask | FocusChangeMask);
             break;
@@ -86,7 +96,7 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-finish:
-    XCloseDisplay(display);
-    return 0;
+    finish:
+        XCloseDisplay(display);
+        return 0;
 }

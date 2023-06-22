@@ -12,7 +12,6 @@
 #include <unistd.h>
 
 void initializeFd(char *fileName);
-void pressAndRelease(int key);
 int main(int argc, char *argv[]);
 
 #endif /* KEYSTROKES_H */

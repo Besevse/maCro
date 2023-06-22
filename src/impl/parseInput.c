@@ -17,7 +17,7 @@ void parseInput(char *fileName, char timers[MAX][MAX_STRING_LENGTH],
     int bytes_read;
     int sizeRead = 0;
 
-    // TODO this is very rough and pretty unsafe but it works for now
+    // TODO this is very rough and pretty unsafe, but it works for now
     while ((bytes_read = read(fdInput, line, MAX_STRING_LENGTH)) > 0) {
         for (int i = 0; i < bytes_read; i++) {
             if (line[i] == '\n' && sizeRead < i) {

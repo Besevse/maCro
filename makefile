@@ -1,8 +1,8 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -pedantic -std=c99
+CFLAGS=-Wall -Wextra -pedantic -std=c99 -g
 X11FLAGS=-lX11 -lXtst
 
-buildall: build build_x11 build_functions build_parse_input
+all: build build_x11 build_functions build_parse_input
 
 build: src/headers/keystrokes.h src/impl/keystrokes.c
 	mkdir -p build
@@ -28,7 +28,7 @@ link:
 	mkdir -p build
 	$(CC) build/keystrokes.o build/functions.o build/parseInput.o -o build/main $(CFLAGS)
 
-run:
+run: build/main build/functions.o build/parseInput.o build/keystrokes.o build/keystrokesx11.o
 	sudo ./build/main input.txt
 
 clean:
