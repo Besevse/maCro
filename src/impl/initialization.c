@@ -1,8 +1,7 @@
-#include "../headers/parseInput.h"
+#include "../headers/initialization.h"
 
 void parseInput(char *fileName, char timers[MAX][MAX_STRING_LENGTH],
-                char macros[MAX][MAX_STRING_LENGTH],
-                char macroChar[MAX][MAX_STRING_LENGTH], int *timerCounter,
+                char macros[MAX][MAX_STRING_LENGTH], int *timerCounter,
                 int *macroCounter) {
     int fdInput;
 
@@ -51,8 +50,12 @@ void parseInput(char *fileName, char timers[MAX][MAX_STRING_LENGTH],
             }
         }
     }
+    close(fdInput);
+}
 
-    // initialize all macros
+void initializeMacros(char macros[MAX][MAX_STRING_LENGTH],
+                      char macroChar[MAX][MAX_STRING_LENGTH],
+                      const int *macroCounter){
     for (int i = 0; i < *macroCounter; i++) {
         printf("Initializing macro %s\n", macros[i]);
         int counter = 0;
@@ -61,5 +64,15 @@ void parseInput(char *fileName, char timers[MAX][MAX_STRING_LENGTH],
             counter++;
         }
         macroChar[i][counter + 1] = '\0';
+    }
+}
+
+void initializeThreads(pthread_t threads[], char timers[MAX][MAX_STRING_LENGTH], const int *timerCounter){
+    // start all timers
+    for (int i = 0; i < *timerCounter; i++) {
+        printf("Starting timer %s\n", timers[i]);
+        pthread_t thread;
+        pthread_create(&thread, NULL, (void *(*)(void *))timer, &timers[i]);
+        threads[i] = thread;
     }
 }

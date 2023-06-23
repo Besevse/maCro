@@ -33,20 +33,17 @@ int main(int argc, char *argv[]) {
     int timerCounter = 0;
     int macroCounter = 0;
 
+
     initializeFd(deviceName);
-    parseInput(argv[1], timers, macros, macroChar, &timerCounter,
+    parseInput(argv[1], timers, macros, &timerCounter,
                &macroCounter);
 
-    sleep(0.1);
+    sleep(1);
 
     pthread_t threads[timerCounter];
-    // start all timers
-    for (int i = 0; i < timerCounter; i++) {
-        printf("Starting timer %s\n", timers[i]);
-        pthread_t thread;
-        pthread_create(&thread, NULL, timer, timers[i]);
-        threads[i] = thread;
-    }
+
+    initializeMacros(macros, macroChar, &macroCounter);
+    initializeThreads(threads, timers, &timerCounter);
 
     fd_set rfds;
     FD_ZERO(&rfds);
@@ -76,6 +73,10 @@ int main(int argc, char *argv[]) {
                 fflush(stdout);
             }
         }
+    }
+    // TODO EXIT THIS
+    for(int i = 0; i < sizeof(threads) / sizeof(pthread_t); i++) {
+        pthread_cancel(threads[i]);
     }
     close(fd);
     return 0;

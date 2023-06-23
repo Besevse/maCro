@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-Wall -Wextra -pedantic -std=c99 -g
 X11FLAGS=-lX11 -lXtst
 
-all: build build_x11 build_functions build_parse_input
+all: build build_x11 build_functions build_initialization
 
 build: src/headers/keystrokes.h src/impl/keystrokes.c
 	mkdir -p build
@@ -16,19 +16,19 @@ build_functions: src/headers/functions.h src/impl/functions.c
 	mkdir -p build
 	$(CC) $(CFLAGS) -c -o build/functions.o src/impl/functions.c
 
-build_parse_input: src/headers/parseInput.h src/impl/parseInput.c
+build_initialization: src/headers/initialization.h src/impl/initialization.c
 	mkdir -p build
-	$(CC) $(CFLAGS) -c -o build/parseInput.o src/impl/parseInput.c
+	$(CC) $(CFLAGS) -c -o build/initialization.o src/impl/initialization.c
 	
 linkx11:
 	mkdir -p build
-	$(CC) build/keystrokesx11.o build/functions.o build/parseInput.o -o build/main $(CFLAGS) $(X11FLAGS)
+	$(CC) build/keystrokesx11.o build/functions.o build/initialization.o -o build/main $(CFLAGS) $(X11FLAGS)
 	
 link:
 	mkdir -p build
-	$(CC) build/keystrokes.o build/functions.o build/parseInput.o -o build/main $(CFLAGS)
+	$(CC) build/keystrokes.o build/functions.o build/initialization.o -o build/main $(CFLAGS)
 
-run: build/main build/functions.o build/parseInput.o build/keystrokes.o build/keystrokesx11.o
+run: build/main
 	sudo ./build/main input.txt
 
 clean:

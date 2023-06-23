@@ -47,11 +47,11 @@ void executeKeystrokes(char *arg) {
 void execute(char *arg) {
     if (arg[0] == 'b') {
         pthread_t thread;
-        pthread_create(&thread, NULL, executeBash, (char *)&arg[2]);
+        pthread_create(&thread, NULL, (void *(*)(void *))executeBash, (char *)&arg[2]);
     }
     if (arg[0] == 'k') {
         pthread_t thread;
-        pthread_create(&thread, NULL, executeKeystrokes, (char *)&arg[2]);
+        pthread_create(&thread, NULL, (void *(*)(void *))executeKeystrokes, (char *)&arg[2]);
     }
     printf("Executing %s\n", arg);
 }

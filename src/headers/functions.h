@@ -2,7 +2,7 @@
 #define FUNCTIONS_H
 
 #include "constants.h"
-#include "parseInput.h"
+#include "initialization.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <pthread.h>
